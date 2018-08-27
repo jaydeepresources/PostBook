@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="jumbotron">
+        <p class="display-4 text-center">Posts</p>
+    </div>
+
+    <div class="text-center" *ngIf="progressFlag">
+        <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+    </div>
+
+    <div class="card mb-3" *ngFor="let post of posts;let i=index">
+        <div class="card-header">
+            {{post.id}}
+            <i class="far fa-trash-alt close fa-lg mt-1" (click)="deletePost(post.id,i)"></i>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">{{post.title}}</h4>
+            <p class="card-text">{{post.body}}</p>
+        </div>
+    </div>
+
+    <form #postForm="ngForm" (ngSubmit)="addPost(postForm)" novalidate>
+        <div class="form-group row mb-2">
+            <div class="col-sm">
+                <input type="text" class="form-control" placeholder="enter post title" name="title" #title="ngModel" [(ngModel)]="newPost.title"
+                    required>
+            </div>
+        </div>
+
+        <div class="alert alert-warning" *ngIf="title.dirty && title.invalid">
+            <span class="h5 text-danger">Title can't be empty</span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm">
+                <input type="text" class="form-control" placeholder="enter post body" name="body" #body="ngModel" [(ngModel)]="newPost.body"
+                    required>
+            </div>
+        </div>
+
+        <div class="alert alert-warning" *ngIf="body.dirty && body.invalid">
+            <span class="h5 text-danger">Body can't be empty</span>
+        </div>
+
+        <div *ngIf="addFlag">
+            <i class="fas fa-sync fa-spin fa-lg"></i>
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-3" [disabled]="postForm.pristine || (postForm.dirty && postForm.invalid)"
+        *ngIf="!addFlag">
+            <span class="mr-2">Add Post</span>
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <span class="h4 ml-2" *ngIf="successFlag">
+            Post Added
+        </span>
+        <span class="h4 ml-2" *ngIf="errorFlag">
+            Post Couldn't Be Added
+        </span>
+    </form>
+
+</div>
